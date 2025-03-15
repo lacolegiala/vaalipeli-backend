@@ -28,3 +28,9 @@ type Municipality = {
   name_sv: string,
   municipality_id: string
 }
+
+type Party = {
+  id: number,
+  name_fi: string,
+  color: string
+}
