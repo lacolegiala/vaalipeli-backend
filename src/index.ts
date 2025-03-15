@@ -24,7 +24,7 @@ app.get('/municipalities', async (req, res) => {
 app.get('/counties', async (req, res) => {
   try {
     const response = await axios.get(
-      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/counties2024-zjuylDAk.js'
+      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies'
     )
     console.log('dsjsjkddjsk', response)
   } catch (error) {
