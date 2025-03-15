@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/municipalities', async (requestAnimationFrame, res) => {
+app.get('/municipalities', async (req, res) => {
   try {
     const response = await axios.get(
       'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/municipalities2025-Dcea4BZl.js'
@@ -33,7 +33,6 @@ app.get('/county-candidate-data/:id', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch candidates" });
   }
 });
-
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
