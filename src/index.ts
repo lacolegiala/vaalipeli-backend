@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
+import axios from "axios";
 import dotenv from "dotenv";
-import http from 'http';
 
 dotenv.config();
 
@@ -9,9 +9,31 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello from backend!" });
+app.get('/municipalities', async (requestAnimationFrame, res) => {
+  try {
+    const response = await axios.get(
+      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/municipalities2025-Dcea4BZl.js'
+    )
+    console.log('dsjsjkddjsk', response)
+  } catch (error) {
+    console.error('Error fetching municipalities', error)
+    res.status(500).json({ error: 'Failed to fetch municipalities' })
+  }
+})
+
+app.get('/county-candidate-data/:id', async (req, res) => {
+  const id = req.params.id
+  try {
+    const response = await axios.get(
+      `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies/${id}/candidates`
+    );
+    console.log('djssjkdsdjk', response)
+  } catch (error) {
+    console.error("Error fetching candidates:", error);
+    res.status(500).json({ error: "Failed to fetch candidates" });
+  }
 });
 
-const PORT = process.env.PORT || 5001;
+
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
