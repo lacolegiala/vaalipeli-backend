@@ -11,10 +11,10 @@ app.use(express.json());
 
 app.get('/municipalities', async (req, res) => {
   try {
-    const response = await axios.get(
-      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/municipalities2025-Dcea4BZl.js'
+    const response = await axios.get<Municipality>(
+      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies'
     )
-    console.log('dsjsjkddjsk', response)
+    res.json(response.data)
   } catch (error) {
     console.error('Error fetching municipalities', error)
     res.status(500).json({ error: 'Failed to fetch municipalities' })
@@ -26,7 +26,7 @@ app.get('/counties', async (req, res) => {
     const response = await axios.get(
       'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies'
     )
-    console.log('dsjsjkddjsk', response)
+    res.json(response.data)
   } catch (error) {
     console.error('Error fetching counties', error)
     res.status(500).json({ error: 'Failed to fetch counties' })
@@ -34,26 +34,38 @@ app.get('/counties', async (req, res) => {
 })
 
 app.get('/municipality/:id/parties', async (req, res) => {
-  console.log('sajajshj')
   const id = req.params.id
   try {
-    const response = await axios.get(
+    const response = await axios.get<Party[]>(
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies/${id}/parties`
     )
-    console.log('ajksajkasjkasjk', response)
+    res.json(response.data)
   } catch (error) {
     console.error("Error fetching parties:", error);
     res.status(500).json({ error: "Failed to fetch parties" });
   }
 })
 
+app.get('/county/:id/parties', async (req, res) => {
+  const id = req.params.id
+  try {
+    const response = await axios.get<Party[]>(
+      `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies/${id}/parties`
+    )
+    res.json(response.data)
+  } catch (error) {
+    console.error('Error fetching parties:', error)
+    res.status(500).json({ error: 'Failed to fetch parties' })
+  }
+})
+
 app.get('/county/:id/candidate-data', async (req, res) => {
   const id = req.params.id
   try {
-    const response = await axios.get(
+    const response = await axios.get<Candidate[]>(
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies/${id}/candidates`
     );
-    console.log('djssjkdsdjk', response)
+    res.json(response.data)
   } catch (error) {
     console.error("Error fetching candidates:", error);
     res.status(500).json({ error: "Failed to fetch candidates" });

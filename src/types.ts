@@ -29,6 +29,12 @@ type Municipality = {
   municipality_id: string
 }
 
+type County = {
+  id: number,
+  name_fi: string,
+  name_sv: string
+}
+
 type Party = {
   id: number,
   name_fi: string,
