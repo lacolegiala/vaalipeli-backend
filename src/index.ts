@@ -59,6 +59,19 @@ app.get('/county/:id/parties', async (req, res) => {
   }
 })
 
+app.get('/municipality/:id/candidate-data', async (req, res) => {
+  const id = req.params.id
+  try {
+    const response = await axios.get<Candidate[]>(
+      `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies/${id}/candidates`
+    )
+    res.json(response.data)
+  } catch (error) {
+    console.error("Error fetching candidates:", error);
+    res.status(500).json({ error: "Failed to fetch candidates" });
+  }
+})
+
 app.get('/county/:id/candidate-data', async (req, res) => {
   const id = req.params.id
   try {
