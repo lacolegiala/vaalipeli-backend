@@ -65,7 +65,9 @@ app.get('/municipality/:id/candidate-data', async (req, res) => {
     const response = await axios.get<Candidate[]>(
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies/${id}/candidates`
     )
-    res.json(response.data)
+    const candidates = response.data
+    const shuffled = candidates.sort(() => 0.5 - Math.random())
+    res.json(shuffled)
   } catch (error) {
     console.error("Error fetching candidates:", error);
     res.status(500).json({ error: "Failed to fetch candidates" });
@@ -78,7 +80,9 @@ app.get('/county/:id/candidate-data', async (req, res) => {
     const response = await axios.get<Candidate[]>(
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies/${id}/candidates`
     );
-    res.json(response.data)
+    const candidates = response.data
+    const shuffled = candidates.sort(() => 0.5 - Math.random())
+    res.json(shuffled)
   } catch (error) {
     console.error("Error fetching candidates:", error);
     res.status(500).json({ error: "Failed to fetch candidates" });
