@@ -26,9 +26,7 @@ type Info = {
 type Municipality = {
   id: number,
   name_fi: string,
-  name_sv: string,
-  municipality_id: string,
-  county_id: string
+  name_sv: string
 }
 
 type MunicipalityFromApi = {
