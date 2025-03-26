@@ -11,12 +11,12 @@ app.use(express.json());
 
 app.get("/municipalities", async (req, res) => {
   try {
-    const response = await axios.get(
+    const jsResponse = await axios.get(
       "https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/municipalities2025-Dcea4BZl.js",
       { responseType: "text" }
     );
 
-    const match = response.data.match(/const municipalities = (\[.*\]);/s);
+    const match = jsResponse.data.match(/const municipalities = (\[.*\]);/s);
 
     if (!match) {
       throw new Error("Failed to extract municipalities");
@@ -24,7 +24,18 @@ app.get("/municipalities", async (req, res) => {
 
     const municipalities = JSON.parse(match[1]);
 
-    const transformedData = municipalities.map((m: Municipality) => ({
+    const apiResponse = await axios.get<MunicipalityFromApi[]>(
+      'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies'
+    )
+
+    const apiMunicipalities = apiResponse.data
+
+    const municipalityIdMap = new Map(
+      apiMunicipalities.map((m: MunicipalityFromApi) => [m.official_id, m.id])
+    );
+
+    const transformedData: Municipality = municipalities.map((m: Municipality) => ({
+      id: municipalityIdMap.get(m.municipality_id),
       municipality_id: m.municipality_id,
       name_fi: m.name_fi,
       name_sv: m.name_sv,
@@ -40,10 +51,9 @@ app.get("/municipalities", async (req, res) => {
 
 app.get('/counties', async (req, res) => {
   try {
-    const response = await axios.get(
+    const response = await axios.get<County[]>(
       'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies'
     )
-    console.log('counties', response.data)
     res.json(response.data)
   } catch (error) {
     console.error('Error fetching counties', error)
