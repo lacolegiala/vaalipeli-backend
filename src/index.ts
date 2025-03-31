@@ -66,8 +66,7 @@ app.get('/municipality/:id/candidate-data', async (req, res) => {
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies/${id}/candidates`
     )
     const candidates = response.data
-    const shuffled = candidates.sort(() => 0.5 - Math.random())
-    res.json(shuffled)
+    res.json(candidates)
   } catch (error) {
     console.error("Error fetching candidates:", error);
     res.status(500).json({ error: "Failed to fetch candidates" });
@@ -81,8 +80,7 @@ app.get('/county/:id/candidate-data', async (req, res) => {
       `https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies/${id}/candidates`
     );
     const candidates = response.data
-    const shuffled = candidates.sort(() => 0.5 - Math.random())
-    res.json(shuffled)
+    res.json(candidates)
   } catch (error) {
     console.error("Error fetching candidates:", error);
     res.status(500).json({ error: "Failed to fetch candidates" });
