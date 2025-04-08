@@ -14,7 +14,7 @@ app.get("/municipalities", async (req, res) => {
     const response = await axios.get<MunicipalityFromApi[]>(
       'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/municipality/constituencies'
     )
-    const sorted = response.data.sort((a, b) => a.name_fi.localeCompare(b.name_fi))
+    const sorted = response.data.sort((a, b) => a.name_fi.localeCompare(b.name_fi, "fi"))
     res.json(sorted);
   } catch (error) {
     console.error("Error fetching municipalities", error);
@@ -27,7 +27,7 @@ app.get('/counties', async (req, res) => {
     const response = await axios.get<County[]>(
       'https://vaalit.yle.fi/vaalikone/alue-ja-kuntavaalit2025/api/public/county/constituencies'
     )
-    const sorted = response.data.sort((a, b) => a.name_fi.localeCompare(b.name_fi))
+    const sorted = response.data.sort((a, b) => a.name_fi.localeCompare(b.name_fi, "fi"))
     res.json(sorted);
   } catch (error) {
     console.error('Error fetching counties', error)
